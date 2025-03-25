@@ -36,10 +36,10 @@ else{
 
 //Húsvét vasárnap dátumának indexe
 if ($H<=31){
-	$hvi = array_search("máricius " . $H . ".", $lista);
+	$hvi = array_search("március " . $H . ".", $lista);
 }
 else{
-    $hvi = array_search("április " . $H-31 . ".", $lista);
+    $hvi = array_search("április " . ($H-31) . ".", $lista);
 }
 
 //Húsvét vasárnap indexéből kiindulva elérjük a többi ünnepnap indexét és dátumát
