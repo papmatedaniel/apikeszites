@@ -1,0 +1,15 @@
+		public void kovetkezodatum()
+		{
+			var list = new List<DateTime>();
+			string[] beolvas2 = File.ReadAllLines("Adatok.txt", Encoding.UTF8);
+			foreach (var item in beolvas2)
+			{
+				int ev = Convert.ToInt32(item.Split(';')[0].Split('.')[0]);
+				int honap = Convert.ToInt32(item.Split(';')[0].Split('.')[1]);
+				int nap = Convert.ToInt32(item.Split(';')[0].Split('.')[2]);
+				list.Add(new DateTime(ev, honap, nap));
+			}
+			list.Sort((a, b) => a.CompareTo(b));
+			Console.WriteLine(monthCalendar1.SelectionRange.Start.ToString().Split(' ')[0]);
+
+		}
