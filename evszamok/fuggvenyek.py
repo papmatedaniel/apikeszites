@@ -137,3 +137,39 @@ def adottevteliholdjai():
 
 
 # print(adottevteliholdjai())
+def percboldatum(perc):
+    """0001.01.01.00:00 - x dátum(pl 2025.02.19.23:10) között eltelt percek számából számolja ki az x dátumot"""
+    napokszama = perc // (60 * 24)
+    percekszama = perc % (60 * 24)
+    ora, perc = percboloraperc(percekszama)
+    return f"{napboldatum(napokszama)}{ora:02}:{perc:02}"
+
+
+def adottevteliholdjai(megadottidopont = "2025.04.08.", evek = 3):
+    megadottev = int(megadottidopont.split(".")[0])
+
+    origo_ido = datumbolperc("2021.06.24.20:40")
+    szinodikus_ido_percben = int(29.53058867 * 24  * 60)
+    # megadottev = int(input("Add meg az évet: ")[0:4])
+
+    """AI: {"""
+    # Számoljuk ki, hogy hány telihold periódus van egy évben:
+    # 1 év = 365.25 nap (átlagosan) és ennek percben: 365.25*24*60
+    # Ezért az egy év alatt bekövetkező teliholdak száma:
+    teliholdak_egy_evben = 365.25 / 29.53058867
+    
+    # A megadott év és 2021 közötti különbség alapján számoljuk ki a korrekciós teliholdok számát
+    offset_telihold = int(round((megadottev - 2021) * teliholdak_egy_evben))
+    
+    # A helyes időpont eléréséhez korrigáljuk az origo_ido-t
+    origo_ido += (offset_telihold-6) * szinodikus_ido_percben
+
+    """}: AI"""
+
+    while (evek != 0):
+        if (datumbolnap(megadottidopont) * 24 * 60) < origo_ido:
+            evek -= 1
+            print(percboldatum(origo_ido))
+        origo_ido += szinodikus_ido_percben
+
+print(adottevteliholdjai("2010.01.24", 14))
