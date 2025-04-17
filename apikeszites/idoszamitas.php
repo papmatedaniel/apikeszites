@@ -107,11 +107,8 @@ function percboldatum($perc){
     return napboldatum($napokszama) . sprintf("%02d", $ora) . sprintf(":%02d", $perc);
 }
 
-
-
-
-
-function adottevteliholdjai($megadottidopont, $darab){
+function kovetkezoteliholdak($megadottidopont, $darab){
+    // A megadott dátum(pl 2025.04.01) után következő x $darab(pl 1) telihold dátumát számolja ki(2025.05.12.07:52)
     $megadottev = (int)explode(".", $megadottidopont)[0];
     $origo_ido = datumbolperc("2021.06.24.20:40");
     $szinodikus_ido_percben = (int)(29.53058867 * 24 * 60);
@@ -128,7 +125,28 @@ function adottevteliholdjai($megadottidopont, $darab){
     }
     return $teliholdak;
 }
+
+function aktualholdfazis($datum){
+    // A megadott dátum alapján kiszámolja a holdfázist.
+    // Visszatérési értéke a holdfázis százalékos értéke és a változás iránya
+    $koviTelihold = kovetkezoteliholdak($datum, 1);
+    $elozotelihold = kovetkezoteliholdak(napboldatum(datumbolnap($datum)-30), 1);
+    $egyfazis = datumbolperc($koviTelihold[0]) - datumbolperc($elozotelihold[0]);
+    $deficit = datumbolperc($datum) - datumbolperc($elozotelihold[0]);
+    $t = ($deficit / $egyfazis) * 100;
+    $x = round(abs(100 - $t * 2));  //<- AI
+    
+    if ($x < 10) {
+        $fazis = "újhold";
+    } elseif ($x < 50) {
+        $fazis = "növekvő";
+    } elseif ($x < 60) {
+        $fazis = "telihold";
+    } elseif ($x < 90) {
+        $fazis = "fogyó";
+    } else {
+        $fazis = "újhold";
+    }
+    return [$x, $fazis];
+}
 ?>
-
-
-
