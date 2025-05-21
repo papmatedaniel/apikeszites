@@ -136,17 +136,24 @@ function aktualholdfazis($datum){
     $t = ($deficit / $egyfazis) * 100;
     $x = round(abs(100 - $t * 2));  //<- AI
     
-    if ($x < 10) {
-        $fazis = "újhold";
-    } elseif ($x < 50) {
-        $fazis = "növekvő";
-    } elseif ($x < 60) {
-        $fazis = "telihold";
-    } elseif ($x < 90) {
-        $fazis = "fogyó";
-    } else {
-        $fazis = "újhold";
+    if ($x <= 2 || $x >= 98) {
+        $fazis = "Újhold";
+    } elseif ($x > 2 && $x <= 22) {
+        $fazis = "Növekvő sarló";
+    } elseif ($x > 22 && $x <= 28) {
+        $fazis = "Első negyed";
+    } elseif ($x > 28 && $x <= 48) {
+        $fazis = "Növekvő domború";
+    } elseif ($x > 48 && $x <= 52) {
+        $fazis = "Telihold";
+    } elseif ($x > 52 && $x <= 72) {
+        $fazis = "Fogyó domború";
+    } elseif ($x > 72 && $x <= 78) {
+        $fazis = "Utolsó negyed";
+    } elseif ($x > 78 && $x < 98) {
+        $fazis = "Fogyó sarló";
     }
+    
     return [$x, $fazis];
 }
 ?>
